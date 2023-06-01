@@ -26,9 +26,9 @@ export const createStation = async (req, res, next) => {
   const { name, code, city } = req.body;
   try {
     await Station.create({
-      name: name,
-      code: code,
-      city: city,
+      name: name.toUpperCase(),
+      code: code.toUpperCase(),
+      city: city.toUpperCase(),
     });
     return res.status(200).json({ msg: "Station  Added Successfully" });
   } catch (err) {
@@ -48,9 +48,9 @@ export const updateStation = async (req, res, next) => {
   try {
     await Station.update(
       {
-        name: name,
-        code: code,
-        city: city,
+        name: name.toUpperCase(),
+        code: code.toUpperCase(),
+        city: city.toUpperCase(),
       },
       {
         where: {

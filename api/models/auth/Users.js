@@ -4,6 +4,15 @@ import db from "../../config/Database.js";
 const {DataTypes} = Sequelize;
 
 const Users = db.define('users',{
+    uuid: {
+        type: DataTypes.STRING,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    }
+    ,
     username:{
         type: DataTypes.STRING,
         allowNull: false,
@@ -29,10 +38,14 @@ const Users = db.define('users',{
     },
     role:{
         type: DataTypes.STRING,
+        defaultValue: "user",
         allowNull: false,
         validate: {
             notEmpty: true
         }
+    },
+    refresh_token:{
+        type: DataTypes.TEXT
     },
 },{
     freezeTableName: true
