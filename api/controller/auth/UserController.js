@@ -4,7 +4,7 @@ import Users from "../../models/auth/Users.js";
 export const getUser = async (req, res, next) => {
   try {
     const users = await Users.findAll({
-      attributes: ["id", "username", "email", "role"],
+      attributes: ["uuid", "username", "email", "role"],
     });
     res.status(200).json(users);
   } catch (err) {
@@ -12,15 +12,15 @@ export const getUser = async (req, res, next) => {
   }
 };
 
-export const getUserById = async (req, res, next) => {
+export const getUserByUuid = async (req, res, next) => {
   try {
-    const response = await Users.findOne({
-      attributes: ["id", "name", "email", "role"],
+    const users = await Users.findOne({
       where: {
-        id: req.params.id,
+        uuid: req.params.id
       },
+      attributes: ["uuid", "username", "email", "role"]
     });
-    res.status(200).json(response);
+    res.status(200).json(users);
   } catch (err) {
     next(err);
   }
@@ -32,8 +32,8 @@ export const createUser = async (req, res, next) => {
       email: req.body.email,
     },
   });
-  const { username, email, password, confPassword, role } = req.body;
-  if (password !== confPassword)
+  const { username, email, password, confirmPassword, role } = req.body;
+  if (password !== confirmPassword)
     return res
       .status(400)
       .json({ msg: "Password And Confirm Password Do Not Match" });
@@ -44,6 +44,7 @@ export const createUser = async (req, res, next) => {
       username: username,
       email: email,
       password: hashPasword,
+      confirmPassword: confirmPassword,
       role: role,
     });
     res.status(201).json({ msg: "User Created Successfully" });

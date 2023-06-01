@@ -12,8 +12,8 @@ const router = express.Router();
 
 router.get("/station", getStation);
 router.get("/station/:id", getStationById);
-router.post("/station", verifyUser, verifyAdmin, createStation);
-router.patch("/station/:id", verifyUser, verifyAdmin, updateStation);
-router.delete("/station/:id", verifyUser, verifyAdmin, deleteStation);
+router.post("/station", createStation);
+router.patch("/station/:id", updateStation);
+router.delete("/station/:id", deleteStation);
 
 export default router;

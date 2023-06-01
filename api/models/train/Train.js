@@ -7,6 +7,9 @@ const { DataTypes } = Sequelize;
 const Train = db.define(
   "train",
   {
+    id_class: {
+      type: DataTypes.INTEGER
+    },
     train_code: {
       type: DataTypes.STRING(5),
       allowNull: false,
@@ -15,7 +18,7 @@ const Train = db.define(
       },
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(40),
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -42,7 +45,9 @@ const Train = db.define(
   }
 );
 
-Class.hasOne(Train)
+Class.hasOne(Train, {
+  foreignKey: 'id_class'
+})
 Train.belongsTo(Class, {
   foreignKey: 'id_class'
 })
