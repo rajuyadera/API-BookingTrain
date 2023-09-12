@@ -11,12 +11,12 @@ import { refreshToken } from "../../utils/RefreshToken.js";
 
 const router = express.Router();
 
-router.get("/token", refreshToken)
+router.get("/api/usertoken", refreshToken)
 
-router.get("/user", getUser);
-router.get("/user/:id", getUserByUuid);
-router.post("/user",verifyAdmin ,createUser);
-router.patch("/user/:id", verifyAdmin, updateUser);
-router.delete("/user/:id", verifyAdmin, deleteUser);
+router.get("/api/user",verifyUser, verifyAdmin, getUser);
+router.get("/api/user/:uuid",verifyUser, getUserByUuid);
+router.post("/api/user",verifyAdmin ,createUser);
+router.patch("/api/user/:uuid",verifyUser, verifyAdmin, updateUser);
+router.delete("/api/user/:uuid", verifyAdmin, deleteUser);
 
 export default router;

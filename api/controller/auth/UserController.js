@@ -6,7 +6,7 @@ export const getUser = async (req, res, next) => {
     const users = await Users.findAll({
       attributes: ["uuid", "username", "email", "role"],
     });
-    res.status(200).json(users);
+    res.status(200).json({ users });
   } catch (err) {
     next(err);
   }
@@ -16,9 +16,9 @@ export const getUserByUuid = async (req, res, next) => {
   try {
     const users = await Users.findOne({
       where: {
-        uuid: req.params.id
+        uuid: req.params.uuid,
       },
-      attributes: ["uuid", "username", "email", "role"]
+      attributes: ["uuid", "username", "email", "role"],
     });
     res.status(200).json(users);
   } catch (err) {
@@ -36,8 +36,8 @@ export const createUser = async (req, res, next) => {
   if (password !== confirmPassword)
     return res
       .status(400)
-      .json({ msg: "Password And Confirm Password Do Not Match" });
-  if (user) return res.status(400).json({ msg: "Email Already Created" });
+      .json({ message: "Password And Confirm Password Do Not Match" });
+  if (user) return res.status(400).json({ message: "Email Already Created" });
   const hashPasword = await argon2.hash(password);
   try {
     await Users.create({
@@ -47,7 +47,7 @@ export const createUser = async (req, res, next) => {
       confirmPassword: confirmPassword,
       role: role,
     });
-    res.status(201).json({ msg: "User Created Successfully" });
+    res.status(201).json({ message: "User Created" });
   } catch (err) {
     next(err);
   }
@@ -56,10 +56,10 @@ export const createUser = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
   const user = await Users.findOne({
     where: {
-      uuid: req.params.id,
+      uuid: req.params.uuid,
     },
   });
-  if (!user) return res.status(404).json({ msg: "User Not Found!" });
+  if (!user) return res.status(404).json({ message: "User Not Found!" });
   const { name, email, password, confPassword, role } = req.body;
   let hashPasword;
   if (password === "" || password === null) {
@@ -70,7 +70,7 @@ export const updateUser = async (req, res, next) => {
   if (password !== confPassword)
     return res
       .status(400)
-      .json({ msg: "Password And Confirm Password Do Not Match" });
+      .json({ message: "Password And Confirm Password Do Not Match" });
 
   try {
     await Users.update(
@@ -82,11 +82,11 @@ export const updateUser = async (req, res, next) => {
       },
       {
         where: {
-          id: user.id,
+          uuid: user.uuid,
         },
       }
     );
-    res.status(200).json({ msg: "User Updated" });
+    res.status(200).json({ message: "User Updated" });
   } catch (err) {
     next(err);
   }
@@ -95,17 +95,17 @@ export const updateUser = async (req, res, next) => {
 export const deleteUser = async (req, res, next) => {
   const user = await Users.findOne({
     where: {
-      uuid: req.params.id,
+      uuid: req.params.uuid,
     },
   });
-  if (!user) return res.status(404).json({ msg: "User Not Found!" });
+  if (!user) return res.status(404).json({ message: "User Not Found!" });
   try {
     await Users.destroy({
       where: {
-        id: user.id,
+        uuid: user.uuid,
       },
     });
-    res.status(200).json({ msg: "User Deleted" });
+    res.status(200).json({ message: "User Deleted" });
   } catch (err) {
     next(err);
   }
