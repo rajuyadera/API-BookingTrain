@@ -3,66 +3,92 @@ import Class from "../../models/train/Class.js";
 export const getClass = async (req, res, next) => {
   try {
     const kelas = await Class.findAll();
-    return res.status(200).json(kelas);
+    return res.status(200).json({ kelas: kelas });
   } catch (err) {
     next(err);
   }
 };
 
-export const getClassById = async (req,res,next) => {
+export const getClassById = async (req, res, next) => {
   try {
     const kelas = await Class.findOne({
       where: {
-        id: req.params.id
-      }
-    })
-    return res.status(200).json(kelas)
-  } catch (err) {
-    next(err)
-  }
-}
+        id: req.params.id,
+      },
+    });
 
-export const createClass = async (req,res, next) => {
-  const {className} = req.body
+    if (!kelas) return res.status(404).json({ message: "Class Not Found" });
+
+    return res.status(200).json({ kelas: kelas });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createClass = async (req, res, next) => {
+  const { className } = req.body;
   const kelas = await Class.findOne({
     where: {
-      className: className
-    }
-  })
+      className: className,
+    },
+  });
 
-  if (kelas) return res.status(400).json({message: "Class Is Registered"})
+  if (kelas) return res.status(400).json({ message: "Class Is Registered" });
 
   try {
     await Class.create({
-      className: className
-    })
-    return res.status(200).json({message: "Class Added Successfully"})
+      className: className,
+    });
+    return res.status(200).json({ message: "Class Added Successfully" });
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
-export const updateClass = async (req,res) => {
-
-}
-
-export const deleteClass = async (req,res,next) => {
+export const updateClass = async (req, res, next) => {
   const kelas = await Class.findOne({
     where: {
-      id: req.params.id
-    }
-  })
+      id: req.params.id,
+    },
+  });
 
-  if(!kelas) return res.status(404).json({message: "Class Not Found"})
+  if (!kelas) return res.status(404).json({ message: "Class Not Found" });
+
+  const {className} = req.body;
+  try {
+    await Class.update(
+      {
+        className: className,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+    res.status(200).json({ message: "Class Updated" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteClass = async (req, res, next) => {
+  const kelas = await Class.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  if (!kelas) return res.status(404).json({ message: "Class Not Found" });
 
   try {
     await Class.destroy({
       where: {
-        id: req.params.id
-      }
-    })
-    return res.status(200).json({message: "Class Deleted"})
+        id: req.params.id,
+      },
+    });
+    return res.status(200).json({ message: "Class Deleted" });
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};

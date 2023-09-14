@@ -3,7 +3,7 @@ import Station from "../../models/station/Station.js";
 export const getStation = async (req, res, next) => {
   try {
     const response = await Station.findAll();
-    return res.status(200).json(response);
+    return res.status(200).json({station : response});
   } catch (err) {
     next(err);
   }
