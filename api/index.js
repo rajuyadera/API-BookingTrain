@@ -8,6 +8,9 @@ import UserRoute from './routes/auth/UserRoute.js'
 import StationRoute from './routes/station/StationRoute.js'
 import Classroute from './routes/train/ClassRoute.js'
 import TrainRoute from './routes/train/TrainRoute.js'
+import RuteRoute from './routes/rute/RuteRoute.js'
+import IdentityRoute from './routes/identity/IdentityRoute.js'
+import Identity from './models/identity/Identity.js'
 dotenv.config()
 
 const app = express()
@@ -15,7 +18,7 @@ const app = express()
 // Check Database
 try {
     db.authenticate()
-    // Train.sync({force: true})
+    // Identity.sync({force: true})
     console.log("Database Running")
 } catch (error) {
     console.log(error)
@@ -34,9 +37,11 @@ app.use(cors({
 // Middleware Route
 app.use(AuthRoute)
 app.use(UserRoute)
+app.use(IdentityRoute)
 app.use(StationRoute)
 app.use(Classroute)
 app.use(TrainRoute)
+app.use(RuteRoute)
 
 
 

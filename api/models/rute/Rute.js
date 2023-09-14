@@ -78,7 +78,7 @@ Rute.belongsTo(Station, {
 })
 
 Train.hasMany(Rute)
-Rute.belongsTo(Station, {
+Rute.belongsTo(Train, {
   foreignKey: "trainId"
 })
 

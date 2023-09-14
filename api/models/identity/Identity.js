@@ -1,10 +1,11 @@
 import { Sequelize } from "sequelize";
 import db from "../../config/Database.js";
+import Users from "../auth/Users.js";
 
 const { DataTypes } = Sequelize;
 
-const Costumer = db.define(
-  "costumer",
+const Identity = db.define(
+  "identity",
   {
     id_user: {
       type: DataTypes.INTEGER,
@@ -13,22 +14,15 @@ const Costumer = db.define(
         notEmpty: true,
       },
     },
-    full_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    email: {
-      type: DataTypes.STRING,
+    nik: {
+      type: DataTypes.BIGINT(16),
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
     phone: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(13),
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -49,4 +43,14 @@ const Costumer = db.define(
 );
 
 
-export default Costumer;
+Users.hasMany(Identity)
+Users.belongsTo(Identity)
+Identity.belongsTo(Users,{
+  foreignKey: "id_user",
+  targetKey: "id"
+})
+
+Identity.removeAttribute('userId')
+
+
+export default Identity;

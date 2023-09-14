@@ -6,14 +6,14 @@ import {
   getStationById,
   updateStation,
 } from "../../controller/station/StationController.js";
-import { verifyAdmin, verifyUser } from "../../utils/VerifyToken.js";
+import { verifyAdmin } from "../../utils/VerifyToken.js";
 
 const router = express.Router();
 
-router.get("/station", getStation);
-router.get("/station/:id", getStationById);
-router.post("/station", createStation);
-router.patch("/station/:id", updateStation);
-router.delete("/station/:id", deleteStation);
+router.get("/api/station", getStation);
+router.get("/api/station/:id", getStationById);
+router.post("/api/station" ,createStation);
+router.patch("/api/station/:id",verifyAdmin, updateStation);
+router.delete("/api/station/:id",verifyAdmin, deleteStation);
 
 export default router;
