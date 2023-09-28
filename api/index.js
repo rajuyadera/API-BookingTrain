@@ -10,7 +10,6 @@ import Classroute from './routes/train/ClassRoute.js'
 import TrainRoute from './routes/train/TrainRoute.js'
 import RuteRoute from './routes/rute/RuteRoute.js'
 import IdentityRoute from './routes/identity/IdentityRoute.js'
-import Identity from './models/identity/Identity.js'
 dotenv.config()
 
 const app = express()
@@ -18,7 +17,6 @@ const app = express()
 // Check Database
 try {
     db.authenticate()
-    // Identity.sync({force: true})
     console.log("Database Running")
 } catch (error) {
     console.log(error)
