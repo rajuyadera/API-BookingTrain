@@ -10,6 +10,7 @@ import Classroute from './routes/train/ClassRoute.js'
 import TrainRoute from './routes/train/TrainRoute.js'
 import RuteRoute from './routes/rute/RuteRoute.js'
 import IdentityRoute from './routes/identity/IdentityRoute.js'
+import Train from './models/train/Train.js'
 dotenv.config()
 
 const app = express()
@@ -28,7 +29,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: 'http://localhost:5173'
 }))
 
 

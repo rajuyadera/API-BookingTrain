@@ -3,9 +3,10 @@ import Rute from "../../models/rute/Rute.js";
 import Station from "../../models/station/Station.js";
 import Train from "../../models/train/Train.js";
 
-export const searchRuteByFromAndTo = async (req, res, next) => {
+export const searchRute = async (req, res, next) => {
   const from = req.query.from;
   const to = req.query.to;
+  const date = req.query.deppart_at;
   try {
     const result = await Rute.findAll({
       include: [
@@ -25,6 +26,7 @@ export const searchRuteByFromAndTo = async (req, res, next) => {
         [Op.and]: [
           { id_station_from: { [Op.like]: `%${from}%` } },
           { id_station_to: { [Op.like]: `%${to}%` } },
+          { deppart_at: { [Op.like]: `%${date}%` } },
         ],
       },
       attributes: [

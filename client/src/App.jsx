@@ -1,26 +1,15 @@
-import { useState } from "react";
-import "./App.css";
-import Navigation from "./components/Header";
-import CarouselItem from "./components/CarouselItem";
-import TrainForm from "./components/TrainForm";
+import HomeRoute from "./pages/home/HomeRoute";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SearchRoute from "./pages/searchJadwal/SearchRoute";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div>
-        <div className="">
-          <Navigation />
-        </div>
-        <div className="inline-block h-[360px] bg-blue-800 pb-[55px] z-50 ">
-          <CarouselItem />
-        </div>
-      </div>
-      <div className="px-[100px] -translate-y-[60px] ">
-        <TrainForm />
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomeRoute />} />
+        <Route path="/search" element={<SearchRoute/>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
