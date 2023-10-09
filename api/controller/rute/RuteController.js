@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import Rute from "../../models/rute/Rute.js";
 import Station from "../../models/station/Station.js";
 import Train from "../../models/train/Train.js";
+import Class from "../../models/train/Class.js";
 
 export const searchRute = async (req, res, next) => {
   const from = req.query.from;
@@ -12,6 +13,7 @@ export const searchRute = async (req, res, next) => {
       include: [
         {
           model: Train,
+          include: Class
         },
         {
           model: Station,
