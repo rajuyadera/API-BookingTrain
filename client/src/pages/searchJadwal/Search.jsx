@@ -10,7 +10,7 @@ import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -45,6 +45,16 @@ const Search = () => {
         const hrs = endTime.diff(startTime, "hours");
         const min = endTime.diff(startTime, "minutes");
         const result = hrs + " jam" + " " + min + " menit"
+
+        const price = data.price
+        const resultCurrency = price.toLocaleString('id-ID', {style: 'currency', currency: 'IDR' }) 
+
+        const date = data.deppart_at
+        let deppartDate = moment(date).format('L')
+        const finalDate = moment(deppartDate).format("DD MMMM YYYY")
+        
+
+
         return (
           <div className="">
             <Card
@@ -56,12 +66,12 @@ const Search = () => {
                   {data.train.name}
                   <span className=" pl-1">(320)</span>
                 </div>
-                <div className="">Ekonomi (C)</div>
+                <div className="">{data.train.class.className}</div>
               </div>
               <div className="text-center">
                 <div className="">{data.from.name}</div>
                 <div className="font-bold">{data.deppart_time}</div>
-                <div className="">{data.deppart_at}</div>
+                <div className="">{finalDate}</div>
               </div>
               <div className="items-center">
                 <div className="">
@@ -75,7 +85,7 @@ const Search = () => {
                 <div className="">8 Oktober 2023</div>
               </div>
               <div className="text-center">
-                <div className="font-bold">Rp. 63.000</div>
+                <div className="font-bold">{resultCurrency}</div>
                 <div className="my-2 ">
                   <Button
                     className="btn w-full text-white bg-yellow-800"
@@ -116,9 +126,23 @@ const Search = () => {
                 >
                   <span>Cancel</span>
                 </Button>
+                <Link
+                to={'/pasenggerdata'}
+                state= {{
+                  adult: state.adult,
+                  infant: state.infant,
+                  from: data.from.name,
+                  to: data.to.name,
+                  deppart_at: data.deppart_at,
+                  deppart_time: data.deppart_time,
+                  arrive_time: data.arrive_time,
+                  price: data.price
+                }}
+                >
                 <Button variant="gradient" color="green" onClick={handleOpen}>
                   <span>Confirm</span>
                 </Button>
+                </Link>
               </DialogFooter>
             </Dialog>
           </div>
