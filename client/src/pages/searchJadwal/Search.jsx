@@ -31,7 +31,7 @@ const Search = () => {
 
   const getRute = async (e) => {
     const response = await axios.get(
-      `http://localhost:4000/api/rute?from=${from}&to=${to}&deppart_at=${deppartDate}`
+      `http://localhost:4000/api/searchrute?from=${from}&to=${to}&deppart_at=${deppartDate}`
     );
     setRute(response.data.rute);
     console.log(rute);
@@ -40,19 +40,19 @@ const Search = () => {
   const mappingRute = () => {
     if (rute.length > 0) {
       return rute.map((data, index) => {
-        const startTime = moment(data.deppart_time, "HH:mm:ss a");
-        const endTime = moment(data.arrive_time, "HH:mm:ss a");
-        const hrs = endTime.diff(startTime, "hours");
-        const min = endTime.diff(startTime, "minutes");
+       const deppartTime = moment.duration(data.deppart_time, "hours")        
+
+        const startTime = moment.duration(data.deppart_time)
+        const endTime = moment.duration(data.arrive_time)
+        const hrs = endTime.subtract(startTime).hours()
+        const min = startTime.subtract(endTime).minutes()
         const result = hrs + " jam" + " " + min + " menit"
 
         const price = data.price
         const resultCurrency = price.toLocaleString('id-ID', {style: 'currency', currency: 'IDR' }) 
 
         const date = data.deppart_at
-        let deppartDate = moment(date).format('L')
-        const finalDate = moment(deppartDate).format("DD MMMM YYYY")
-        
+        const finalDate = moment(date, "YYYY-MM-DD")
 
 
         return (
@@ -71,7 +71,7 @@ const Search = () => {
               <div className="text-center">
                 <div className="">{data.from.name}</div>
                 <div className="font-bold">{data.deppart_time}</div>
-                <div className="">{finalDate}</div>
+                <div className="">{finalDate.format('DD MMMM YYYY')}</div>
               </div>
               <div className="items-center">
                 <div className="">
@@ -82,7 +82,7 @@ const Search = () => {
               <div className="text-center">
                 <div className="">{data.to.name}</div>
                 <div className="font-bold">{data.arrive_time}</div>
-                <div className="">8 Oktober 2023</div>
+                <div className="">{finalDate.format('DD MMMM YYYY')}</div>
               </div>
               <div className="text-center">
                 <div className="font-bold">{resultCurrency}</div>

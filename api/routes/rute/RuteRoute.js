@@ -2,6 +2,7 @@ import express from "express";
 import {
   createRute,
   deleteRute,
+  getAllRute,
   getRuteById,
   searchRute,
   updateRute,
@@ -9,7 +10,8 @@ import {
 
 const router = express.Router();
 
-router.get("/api/rute:?", searchRute);
+router.get("/api/rute", getAllRute);
+router.get("/api/searchrute", searchRute);
 router.get("/api/rute/:id", getRuteById);
 router.post("/api/rute", createRute);
 router.patch("/api/rute/:id", updateRute);
