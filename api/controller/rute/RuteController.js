@@ -1,13 +1,25 @@
 import { Op } from "sequelize";
+import moment from 'moment'
 import Rute from "../../models/rute/Rute.js";
 import Station from "../../models/station/Station.js";
 import Train from "../../models/train/Train.js";
 import Class from "../../models/train/Class.js";
 
+export const getAllRute = async (req, res, next) => {
+  try {
+    const response = await Rute.findAll()
+    return res.status(200).json({rute: response})
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const searchRute = async (req, res, next) => {
   const from = req.query.from;
   const to = req.query.to;
   const date = req.query.deppart_at;
+
+
   try {
     const result = await Rute.findAll({
       include: [

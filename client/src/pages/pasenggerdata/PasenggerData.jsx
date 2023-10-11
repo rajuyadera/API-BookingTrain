@@ -149,8 +149,31 @@ const PasenggerData = () => {
           </Card>
         </div>
         <div className="">
-          <Card className="border-2 border-blue-700">
-            <h1>card harga </h1>
+          <Card className="border-2 border-blue-700 m-auto">
+            <div className="flex flex-col">
+              <div className="bg-blue-600 p-5 text-center text-white text-2xl ">Total Rp {state.price}.-</div>
+              <div className="p-5">
+                <div className="">Rabu, 10 Oktober 2023</div>
+                <div className="font-semibold text-xl"></div>
+                <div className="font-semibold">Ekonomi</div>
+                <div className="">1 Dewasa - 1 Infant</div>
+                <div className="mt-11  ">
+                  <div className="flex">
+                    <div className=" pr-4">
+                      <div className="">PASARSENEN</div>
+                      <div className="">17:00</div>
+                      <div className="">11 Okt 2023</div>
+                    </div>
+                    <div className="px-4">===</div>
+                    <div className="pl-4">
+                      <div className="">PASARSENEN</div>
+                      <div className="">17:00</div>
+                      <div className="">11 Okt 2023</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </Card>
         </div>
       </div>

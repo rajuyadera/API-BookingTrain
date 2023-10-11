@@ -10,7 +10,6 @@ import Classroute from './routes/train/ClassRoute.js'
 import TrainRoute from './routes/train/TrainRoute.js'
 import RuteRoute from './routes/rute/RuteRoute.js'
 import IdentityRoute from './routes/identity/IdentityRoute.js'
-import Train from './models/train/Train.js'
 dotenv.config()
 
 const app = express()
