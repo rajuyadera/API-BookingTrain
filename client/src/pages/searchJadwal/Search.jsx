@@ -40,7 +40,6 @@ const Search = () => {
   const mappingRute = () => {
     if (rute.length > 0) {
       return rute.map((data, index) => {
-       const deppartTime = moment.duration(data.deppart_time, "hours")        
 
         const startTime = moment.duration(data.deppart_time)
         const endTime = moment.duration(data.arrive_time)
@@ -133,7 +132,10 @@ const Search = () => {
                   infant: state.infant,
                   from: data.from.name,
                   to: data.to.name,
+                  train: data.train.name,
+                  className: data.train.class.className,
                   deppart_at: data.deppart_at,
+                  arrive_at: data.arrive_at,
                   deppart_time: data.deppart_time,
                   arrive_time: data.arrive_time,
                   price: data.price
