@@ -19,7 +19,6 @@ const Search = () => {
   const from = state.idFrom;
   const to = state.idTo;
   const deppartDate = searchParams.get("deppart_date");
-  const arriveDate = searchParams.get("deppart_date");
 
   const [rute, setRute] = useState([]);
   const [open, setOpen] = useState(false);

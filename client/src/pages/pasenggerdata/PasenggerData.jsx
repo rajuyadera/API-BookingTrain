@@ -11,14 +11,9 @@ import moment from "moment";
 import { useState } from "react";
 import { BsFillPersonFill } from "react-icons/bs";
 import { FaArrowRight } from "react-icons/fa";
-import { useNavigate, useLocation } from "react-router-dom";
-import {useDispatch} from 'react-redux'
-import {updateCustomer} from '../../features/customerSlice'
-import {updatePasengger} from '../../features/pasenggerSlice'
+import { useLocation } from "react-router-dom";
 
 const PasenggerData = () => {
-  const dispatch = useDispatch()
-  const Navigate = useNavigate()
   const { state } = useLocation();
   const price = state.price;
   const deppartDate = state.deppart_at;
@@ -35,44 +30,6 @@ const PasenggerData = () => {
   const resultArriveTime = arriveTime.slice(0, -3);
 
   const [enableInput, setEnableInput] = useState(true);
-
-  // store data customer
-  const [customerTitle, setCustomerTitle] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [customerIdentityType, setCustomerIdentityType] = useState("");
-  const [customerNoIdentity, setCustomerNoIdentity] = useState(0);
-  const [noTelp, setNoTelp] = useState(0);
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-
-  // store data pasengger
-  const [pasenggerTitle, setPasenggerTitle] = useState("");
-  const [pasenggerName, setPasenggerName] = useState("");
-  const [pasenggerIdentityType, setPasenggerIdentityType] = useState("");
-  const [pasenggerNoIdentity, setPasenggerNoIdentity] = useState(0);
-
-  // store
-  const storeData = (e) => {
-    e.preventDefault()
-    dispatch(updateCustomer({
-      customerTitle,
-      customerName,
-      customerIdentityType,
-      customerNoIdentity,
-      noTelp,
-      email,
-      address
-    }))
-    dispatch(updatePasengger({
-      pasenggerTitle,
-      pasenggerName,
-      pasenggerIdentityType,
-      pasenggerNoIdentity
-    }))
-
-    Navigate("/selectseat")
-  }
-
 
   return (
     <div className=" mx-28 mt-12  ">

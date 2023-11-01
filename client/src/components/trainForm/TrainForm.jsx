@@ -15,31 +15,17 @@ import DatePicker from "react-datepicker";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import axios from "axios";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import { useStation } from "../../features/station/useStation";
 
 const TrainForm = () => {
-  // getTrain
-  const [station, setStation] = useState([]);
+  const { data } = useStation();
+
   const [from, setFrom] = useState({});
   const [to, setTo] = useState({});
   const [deppartDate, setDeppartDate] = useState(new Date());
   const [arriveDate, setArriveDate] = useState(new Date());
-  const [msg, setMsg] = useState("");
-
-  useEffect(() => {
-    getStation();
-  }, []);
-
-  const getStation = async () => {
-    try {
-      const response = await axios.get("http://localhost:4000/api/station");
-      setStation(response.data.station);
-    } catch (error) {
-      setMsg(error.response.data.msg);
-    }
-  };
+  
 
   // collapse
   const [openFrom, setOpenFrom] = useState(false);
@@ -93,8 +79,9 @@ const TrainForm = () => {
                   <h1>Pilih Kota atau Stasiun</h1>
                 </CardBody>
                 <ul>
-                  {station.map((data, index) => (
+                  {data?.data.station.map((data) => (
                     <li
+                      key={data.id}
                       className="w-auto h-auto px-[25px] py-[10px] flex hover:bg-blue-50"
                       onClick={() => {
                         setFrom(data);
@@ -132,8 +119,9 @@ const TrainForm = () => {
                   <h1>Pilih Kota atau Stasiun</h1>
                 </CardBody>
                 <ul>
-                  {station.map((data, index) => (
+                  {data?.data.station.map((data) => (
                     <li
+                      key={data.id}
                       className="w-auto h-auto px-[25px] py-[10px] flex hover:bg-blue-50"
                       onClick={() => {
                         setTo(data);
@@ -159,14 +147,6 @@ const TrainForm = () => {
         <CardBody className="flex pt-0 pb-0 justify-center">
           <div className="w-[300px] h-[72px] mr-[10px]">
             <h1>Pergi</h1>
-            {/* <Input
-              color="blue"
-              type="date"
-              className="w-[400px]"
-              defaultValue={defaultDeppart}
-              value={deppartDate}
-              onChange={(e) => setDeppartDate(e.target.value)}
-            /> */}
             <DatePicker
               dateFormat="dd/MM/yyyy"
               selected={deppartDate}
@@ -187,7 +167,6 @@ const TrainForm = () => {
               disabled={enablePulang}
               dateFormat="yyyy/MM/dd"
               selected={arriveDate}
-              
               onChange={(date) => setArriveDate(date)}
               className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500  "
             />
