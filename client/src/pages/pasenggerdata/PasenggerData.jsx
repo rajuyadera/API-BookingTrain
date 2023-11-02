@@ -11,23 +11,34 @@ import moment from "moment";
 import { useState } from "react";
 import { BsFillPersonFill } from "react-icons/bs";
 import { FaArrowRight } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useRuteStore } from "../../features/rute/ruteSlice";
 
 const PasenggerData = () => {
-  const { state } = useLocation();
-  const price = state.price;
-  const deppartDate = state.deppart_at;
-  const arriveDate = state.arrive_at;
-  const arriveTime = state.arrive_time;
-  const deppartTime = state.deppart_time;
+  const { userData } = useRuteStore();
+  const {
+    adult,
+    infant,
+    from,
+    to,
+    train,
+    className,
+    deppart_at,
+    arrive_at,
+    deppart_time,
+    arrive_time,
+    price,
+  } = userData;
+
   const resultCurrency = price.toLocaleString("id-ID", {
     style: "currency",
     currency: "IDR",
   });
-  const resultDeppartDate = moment(deppartDate, "YYYY-MM-DD");
-  const resultArriveDate = moment(arriveDate, "YYYY-MM-DD");
-  const resultDeppartTime = deppartTime.slice(0, -3);
-  const resultArriveTime = arriveTime.slice(0, -3);
+
+  const resultDeppartDate = moment(deppart_at, "YYYY-MM-DD");
+  const resultArriveDate = moment(arrive_at, "YYYY-MM-DD");
+  const resultDeppartTime = deppart_time.slice(0, -3);
+  const resultArriveTime = arrive_time.slice(0, -3);
 
   const [enableInput, setEnableInput] = useState(true);
 
@@ -39,7 +50,7 @@ const PasenggerData = () => {
       <div className="grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-10 ">
         <div className="col-span-2">
           {/* Form Pemesan */}
-          <form onSubmit={storeData}>
+          <form>
             <Card className="border-2 border-blue-700 p-5 mb-5">
               <h1 className="font-bold text-xl ">Data Pemesan</h1>
               <div className="flex flex-auto py-4">
@@ -101,8 +112,8 @@ const PasenggerData = () => {
                           className: "hidden",
                         }}
                         containerProps={{ className: "min-w-[100px]" }}
-                        value={noTelp}
-                        onChange={(e) => setNoTelp(e.target.value)}
+                        // value={noTelp}
+                        // onChange={(e) => setNoTelp(e.target.value)}
                       />
                     </div>
                   </div>
@@ -120,8 +131,8 @@ const PasenggerData = () => {
                           className: "hidden",
                         }}
                         containerProps={{ className: "min-w-[100px]" }}
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
+                        // value={address}
+                        // onChange={(e) => setAddress(e.target.value)}
                       />
                     </div>
                   </div>
@@ -143,8 +154,8 @@ const PasenggerData = () => {
                           className: "hidden",
                         }}
                         containerProps={{ className: "min-w-[100px]" }}
-                        value={customerName}
-                        onChange={(e) => setCustomerName(e.target.value)}
+                        // value={customerName}
+                        // onChange={(e) => setCustomerName(e.target.value)}
                       />
                     </div>
                   </div>
@@ -162,8 +173,8 @@ const PasenggerData = () => {
                           className: "hidden",
                         }}
                         containerProps={{ className: "min-w-[100px]" }}
-                        value={customerNoIdentity}
-                        onChange={(e) => setCustomerNoIdentity(e.target.value)}
+                        // value={customerNoIdentity}
+                        // onChange={(e) => setCustomerNoIdentity(e.target.value)}
                       />
                     </div>
                   </div>
@@ -181,8 +192,8 @@ const PasenggerData = () => {
                           className: "hidden",
                         }}
                         containerProps={{ className: "min-w-[100px]" }}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        // value={email}
+                        // onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                   </div>
@@ -249,8 +260,8 @@ const PasenggerData = () => {
                           className: "hidden",
                         }}
                         containerProps={{ className: "min-w-[100px]" }}
-                        value={pasenggerName}
-                        onChange={(e) => setPasenggerName(e.target.value)}
+                        // value={pasenggerName}
+                        // onChange={(e) => setPasenggerName(e.target.value)}
                       />
                     </div>
                   </div>
@@ -268,8 +279,8 @@ const PasenggerData = () => {
                           className: "hidden",
                         }}
                         containerProps={{ className: "min-w-[100px]" }}
-                        value={pasenggerNoIdentity}
-                        onChange={(e) => setPasenggerNoIdentity(e.target.value)}
+                        // value={pasenggerNoIdentity}
+                        // onChange={(e) => setPasenggerNoIdentity(e.target.value)}
                       />
                     </div>
                   </div>
@@ -318,9 +329,17 @@ const PasenggerData = () => {
               />
             </div>
             <div className="">
-              <Button type="submit" variant="gradient" color="blue" disabled={enableInput}>
-                <span>Confirm</span>
-              </Button>
+              {enableInput ? (
+                <Button type="submit" variant="gradient" color="blue" disabled>
+                  <span>Confirm</span>
+                </Button>
+              ) : (
+                <Link to={'/selectseat'}>
+                  <Button type="submit" variant="gradient" color="blue">
+                    <span>Confirm</span>
+                  </Button>
+                </Link>
+              )}
             </div>
           </form>
         </div>
@@ -333,15 +352,15 @@ const PasenggerData = () => {
               </div>
               <div className="p-5">
                 <div className="">Rabu, 10 Oktober 2023</div>
-                <div className="font-semibold text-xl">{state.train}</div>
-                <div className="font-semibold">{state.className}</div>
+                <div className="font-semibold text-xl">{train}</div>
+                <div className="font-semibold">{className}</div>
                 <div className="">
-                  {state.adult} Dewasa - {state.infant} Infant
+                  {adult} Dewasa - {infant} Infant
                 </div>
                 <div className="mt-11  ">
                   <div className="flex">
                     <div className=" pr-4">
-                      <div className="">{state.from}</div>
+                      <div className="">{from}</div>
                       <div className="">{resultDeppartTime}</div>
                       <div className="">
                         {resultDeppartDate.format("DD MMMM YYYY")}
@@ -351,7 +370,7 @@ const PasenggerData = () => {
                       <FaArrowRight size={20} />
                     </div>
                     <div className="pl-4">
-                      <div className="">{state.to}</div>
+                      <div className="">{to}</div>
                       <div className="">{resultArriveTime}</div>
                       <div className="">
                         {resultArriveDate.format("DD MMMM YYYY")}
