@@ -11,9 +11,11 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { useRuteStore } from "../../features/rute/ruteSlice";
 
 const Search = () => {
   const [searchParams] = useSearchParams();
+  const { setUserData } = useRuteStore()
   const { state } = useLocation();
 
   const from = state.idFrom;
@@ -28,7 +30,7 @@ const Search = () => {
     getRute();
   }, []);
 
-  const getRute = async (e) => {
+  const getRute = async () => {
     const response = await axios.get(
       `http://localhost:4000/api/searchrute?from=${from}&to=${to}&deppart_at=${deppartDate}`
     );
@@ -39,19 +41,38 @@ const Search = () => {
   const mappingRute = () => {
     if (rute.length > 0) {
       return rute.map((data, index) => {
+        const startTime = moment.duration(data.deppart_time);
+        const endTime = moment.duration(data.arrive_time);
+        const hrs = endTime.subtract(startTime).hours();
+        const min = startTime.subtract(endTime).minutes();
+        const result = hrs + " jam" + " " + min + " menit";
 
-        const startTime = moment.duration(data.deppart_time)
-        const endTime = moment.duration(data.arrive_time)
-        const hrs = endTime.subtract(startTime).hours()
-        const min = startTime.subtract(endTime).minutes()
-        const result = hrs + " jam" + " " + min + " menit"
+        const price = data.price;
+        const resultCurrency = price.toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        });
 
-        const price = data.price
-        const resultCurrency = price.toLocaleString('id-ID', {style: 'currency', currency: 'IDR' }) 
+        const date = data.deppart_at;
+        const finalDate = moment(date, "YYYY-MM-DD");
 
-        const date = data.deppart_at
-        const finalDate = moment(date, "YYYY-MM-DD")
+        const handleButton =() => {
+          const userData = {
+            adult: state.adult,
+                    infant: state.infant,
+                    from: data.from.name,
+                    to: data.to.name,
+                    train: data.train.name,
+                    className: data.train.class.className,
+                    deppart_at: data.deppart_at,
+                    arrive_at: data.arrive_at,
+                    deppart_time: data.deppart_time,
+                    arrive_time: data.arrive_time,
+                    price: data.price,
+          }
 
+          setUserData(userData)
+        }
 
         return (
           <div className="">
@@ -69,7 +90,7 @@ const Search = () => {
               <div className="text-center">
                 <div className="">{data.from.name}</div>
                 <div className="font-bold">{data.deppart_time}</div>
-                <div className="">{finalDate.format('DD MMMM YYYY')}</div>
+                <div className="">{finalDate.format("DD MMMM YYYY")}</div>
               </div>
               <div className="items-center">
                 <div className="">
@@ -80,7 +101,7 @@ const Search = () => {
               <div className="text-center">
                 <div className="">{data.to.name}</div>
                 <div className="font-bold">{data.arrive_time}</div>
-                <div className="">{finalDate.format('DD MMMM YYYY')}</div>
+                <div className="">{finalDate.format("DD MMMM YYYY")}</div>
               </div>
               <div className="text-center">
                 <div className="font-bold">{resultCurrency}</div>
@@ -125,24 +146,12 @@ const Search = () => {
                   <span>Cancel</span>
                 </Button>
                 <Link
-                to={'/pasenggerdata'}
-                state= {{
-                  adult: state.adult,
-                  infant: state.infant,
-                  from: data.from.name,
-                  to: data.to.name,
-                  train: data.train.name,
-                  className: data.train.class.className,
-                  deppart_at: data.deppart_at,
-                  arrive_at: data.arrive_at,
-                  deppart_time: data.deppart_time,
-                  arrive_time: data.arrive_time,
-                  price: data.price
-                }}
+                  to={"/pasenggerdata"}
+                  
                 >
-                <Button variant="gradient" color="green" onClick={handleOpen}>
-                  <span>Confirm</span>
-                </Button>
+                  <Button variant="gradient" color="green" onClick={handleButton}>
+                    <span>Confirm</span>
+                  </Button>
                 </Link>
               </DialogFooter>
             </Dialog>
